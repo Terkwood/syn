@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/Terkwood/neuron-scripts/compare/v0.1.1...v0.1.2) (2021-03-12)
+
+
+### Features
+
+* use sideways link in YMD.md ([8e33b33](https://github.com/Terkwood/neuron-scripts/commit/8e33b33fa2bbe220d93df9842e2b791bcdf87045))
+
 ### [0.1.1](https://github.com/Terkwood/neuron-scripts/compare/v0.1.0...v0.1.1) (2021-03-12)
 
 
