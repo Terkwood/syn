@@ -41,7 +41,7 @@ async function syn(phrase: string) {
       // write the file yyyy-MM-dd.md
       await Deno.writeTextFile(
         datePath,
-        `---\ndate: ${fmtTime}\n---\n\n\n#[[${fmtYearMonth}]]\n`,
+        `---\ndate: ${fmtTime}\n---\n\n\n[[${fmtYearMonth}]]\n`,
       );
     }
 
