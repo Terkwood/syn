@@ -9,18 +9,18 @@ type ZettelType = "default" | "lab" | "journal";
 
 function local(d: Date): Date {
   const MILLIS = 60000;
-  const diff = d.getTimezoneOffset()
+  const diff = d.getTimezoneOffset();
   const ms = diff * MILLIS * -1;
-  const utcMs = d.getTime()
-  return new Date(utcMs - ms)
+  const utcMs = d.getTime();
+  return new Date(utcMs - ms);
 }
 
 function parseDate(x: string): Date {
-  const r = Date.parse(x)
+  const r = Date.parse(x);
   if (Number.isNaN(r)) {
-    return new Date()
+    return new Date();
   } else {
-    return new Date(r)
+    return new Date(r);
   }
 }
 
@@ -36,7 +36,7 @@ async function invokeEditorOn(path: string) {
 
 interface Options {
   zettelType: ZettelType;
-  date: Date
+  date: Date;
 }
 
 async function syn(phrase: string, options: Options) {
@@ -184,5 +184,5 @@ async function createDailyFiles(date: Date, zt: ZettelType) {
 
 await syn(theFile, {
   zettelType: coerceZettelType(typeArg),
-  date: local(parseDate(dateArg))
+  date: local(parseDate(dateArg)),
 });
