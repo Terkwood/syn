@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/Terkwood/neuron-scripts/compare/v0.1.2...v0.1.3) (2021-03-14)
+
+
+### Features
+
+* zettel types ([#6](https://github.com/Terkwood/neuron-scripts/issues/6)) ([9a22521](https://github.com/Terkwood/neuron-scripts/commit/9a22521206f2213d775b950cf708f66702486296))
+
 ### [0.1.2](https://github.com/Terkwood/neuron-scripts/compare/v0.1.1...v0.1.2) (2021-03-12)
 
 
