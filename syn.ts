@@ -7,15 +7,35 @@ import { exists } from "https://deno.land/std/fs/mod.ts";
 
 type ZettelType = "default" | "lab" | "journal";
 
+const MINUTE_MILLIS = 60000;
+const DAY_MINUTES = 60 * 24;
+
+function yesterday(): Date {
+  return new Date(new Date().getTime() - MINUTE_MILLIS * DAY_MINUTES);
+}
+
+function tomorrow(): Date {
+  return new Date(new Date().getTime() + MINUTE_MILLIS * DAY_MINUTES);
+}
+
 function local(d: Date): Date {
-  const MILLIS = 60000;
   const diff = d.getTimezoneOffset();
-  const ms = diff * MILLIS * -1;
+  const ms = diff * MINUTE_MILLIS * -1;
   const utcMs = d.getTime();
   return new Date(utcMs - ms);
 }
 
 function parseDate(x: string): Date {
+  if (x.length > 0) {
+    const firstChar = x[0].toLowerCase();
+    if (firstChar === "y") {
+      return yesterday();
+    }
+    if (firstChar === "t") {
+      return tomorrow();
+    }
+  }
+
   const r = Date.parse(x);
   if (Number.isNaN(r)) {
     return new Date();
