@@ -16,7 +16,7 @@ async function invokeEditorOn(path: string) {
   p.status();
 }
 
-async function syn(phrase: string, _zettelType: ZettelType) {
+async function syn(phrase: string, zettelType: ZettelType) {
   const path = `${phrase}.md`;
   if (await (exists(path))) {
     const statdd = await Deno.lstat(path);
@@ -29,7 +29,7 @@ async function syn(phrase: string, _zettelType: ZettelType) {
   } else {
     const date = new Date();
 
-    const data = defaultZettel(date);
+    const data = applyTemplate(date, zettelType);
 
     // write the main note file
     await Deno.writeTextFile(path, data);
@@ -74,6 +74,10 @@ const fmtYear = (date: Date) => format(date, "yyyy");
 
 const defaultZettel = (date: Date) =>
   `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[${fmtDate(date)}]]\n`;
+const journalZettel = (date: Date) =>
+  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[journal-${fmtDate(date)}]]\n`;
+const labZettel = (date: Date) =>
+  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[labs-${fmtDate(date)}]]\n`;
 
 const args = parse(Deno.args);
 const typeArg = args["t"] || args["type"];
@@ -89,13 +93,28 @@ const stringIt = (ns: NumOrStr) => {
 };
 
 function coerceZettelType(s: string | null | undefined): ZettelType {
-  switch (s) {
-    case "lab":
+  if (s == null || s == "") {
+    return "default"
+  }
+
+  switch (s[0].toLowerCase()) {
+    case "l":
       return "lab"
-    case "journal":
+    case "j":
       return "journal"
     default:
       return "default"
+  }
+}
+
+function applyTemplate(date: Date, zt: ZettelType): string {
+  switch (zt) {
+    case "default":
+      return defaultZettel(date)
+    case "journal":
+      return journalZettel(date)
+    case "lab":
+      return labZettel(date)
   }
 }
 
