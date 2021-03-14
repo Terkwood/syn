@@ -27,41 +27,38 @@ async function syn(phrase: string) {
     }
   } else {
     const date = new Date();
-    const fmtTime = format(date, "yyyy-MM-ddTHH:mm");
 
-    const fmtDate = format(date, "yyyy-MM-dd");
-    const data = `---\ndate: ${fmtTime}\n---\n\n\n#[[${fmtDate}]]\n`;
+    const data = defaultZettel(date);
+
     // write the main note file
     await Deno.writeTextFile(path, data);
 
-    const fmtYearMonth = format(date, "yyyy-MM");
-
-    const datePath = `${fmtDate}.md`;
+    const datePath = `${fmtDate(date)}.md`;
     if (!await (exists(datePath))) {
       // write the file yyyy-MM-dd.md
       await Deno.writeTextFile(
         datePath,
-        `---\ndate: ${fmtTime}\n---\n\n\n[[${fmtYearMonth}]]\n`,
+        `---\ndate: ${fmtTime(date)}\n---\n\n\n[[${fmtYearMonth(date)}]]\n`,
       );
     }
 
-    const yrMoMdPath = `${fmtYearMonth}.md`;
-    const fmtYear = format(date, "yyyy");
+    const yrMoMdPath = `${fmtYearMonth(date)}.md`;
+
     if (!await (exists(yrMoMdPath))) {
       // write the file yyyy-MM.md
       await Deno.writeTextFile(
         yrMoMdPath,
-        `---\ndate: ${fmtTime}\n---\n\n\n#[[${fmtYear}]]\n`,
+        `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[${fmtYear(date)}]]\n`,
       );
     }
 
-    const yrMdPath = `${fmtYear}.md`;
+    const yrMdPath = `${fmtYear(date)}.md`;
     const calendarCard = "calendar";
     if (!await (exists(yrMdPath))) {
       // write the file yyyy.md
       await Deno.writeTextFile(
         yrMdPath,
-        `---\ndate: ${fmtTime}\n---\n\n\n#[[${calendarCard}]]\n`,
+        `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[${calendarCard}]]\n`,
       );
     }
 
@@ -69,8 +66,17 @@ async function syn(phrase: string) {
   }
 }
 
-const argsParsed = parse(Deno.args)["_"];
-const fileNameStrOrNum = (argsParsed.length == 0) ? "whatever" : argsParsed[0];
+const fmtTime = (date: Date) => format(date, "yyyy-MM-ddTHH:mm");
+const fmtDate = (date: Date) => format(date, "yyyy-MM-dd");
+const fmtYearMonth = (date: Date) => format(date, "yyyy-MM");
+const fmtYear = (date: Date) => format(date, "yyyy");
+
+const defaultZettel = (date: Date) =>
+  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[${fmtDate(date)}]]\n`;
+
+const args = parse(Deno.args);
+const noNameArgs = args["_"];
+const fileNameStrOrNum = (noNameArgs.length == 0) ? "whatever" : noNameArgs[0];
 
 type NumOrStr = number | string;
 const stringIt = (ns: NumOrStr) => {
