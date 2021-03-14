@@ -25,7 +25,10 @@ function local(d: Date): Date {
   return new Date(utcMs - ms);
 }
 
-function parseDate(x: string): Date {
+function parseDate(x: string | undefined | null): Date {
+  if (x == null) {
+    return new Date();
+  }
   if (x.length > 0) {
     const firstChar = x[0].toLowerCase();
     if (firstChar === "y") {
