@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/Terkwood/syn/compare/v0.1.3...v0.2.0) (2021-03-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* delete journal-today.ts
+
+### Features
+
+* --date yesterday, --date tomorrow ([d737f8f](https://github.com/Terkwood/syn/commit/d737f8fef5b95de1ce9ceab7d67e7ffbb8ad5b66))
+* delete journal-today.ts ([063c6d9](https://github.com/Terkwood/syn/commit/063c6d9071bdc36c870fa8ce2d49a68d4aad0a4e))
+* random zettel name as default ([328a95e](https://github.com/Terkwood/syn/commit/328a95e7988cc6a974642b520ca78285fe0b35b4))
+* specify date ([#7](https://github.com/Terkwood/syn/issues/7)) ([659e870](https://github.com/Terkwood/syn/commit/659e870ed63139e37538a00775a0b155f7b5b940))
+
+
+### Bug Fixes
+
+* check null/undef in parseDate ([d5c774f](https://github.com/Terkwood/syn/commit/d5c774fa7439005ffaa02ab5919e3d49536d17c2))
+
 ### [0.1.3](https://github.com/Terkwood/neuron-scripts/compare/v0.1.2...v0.1.3) (2021-03-14)
 
 
