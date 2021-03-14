@@ -34,34 +34,8 @@ async function syn(phrase: string, zettelType: ZettelType) {
     // write the main note file
     await Deno.writeTextFile(path, data);
 
-    const datePath = `${fmtDate(date)}.md`;
-    if (!await (exists(datePath))) {
-      // write the file yyyy-MM-dd.md
-      await Deno.writeTextFile(
-        datePath,
-        `---\ndate: ${fmtTime(date)}\n---\n\n\n[[${fmtYearMonth(date)}]]\n`,
-      );
-    }
-
-    const yrMoMdPath = `${fmtYearMonth(date)}.md`;
-
-    if (!await (exists(yrMoMdPath))) {
-      // write the file yyyy-MM.md
-      await Deno.writeTextFile(
-        yrMoMdPath,
-        `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[${fmtYear(date)}]]\n`,
-      );
-    }
-
-    const yrMdPath = `${fmtYear(date)}.md`;
-    const calendarCard = "calendar";
-    if (!await (exists(yrMdPath))) {
-      // write the file yyyy.md
-      await Deno.writeTextFile(
-        yrMdPath,
-        `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[${calendarCard}]]\n`,
-      );
-    }
+    // labs-YYYY-MM-dd or journal-YYYY-MM-dd, if necessary
+    await createDailyFiles(date, zettelType);
 
     await invokeEditorOn(path);
   }
@@ -82,7 +56,6 @@ const labZettel = (date: Date) =>
 const args = parse(Deno.args);
 const typeArg = args["t"] || args["type"];
 
-  
 const noNameArgs = args["_"];
 const fileNameStrOrNum = (noNameArgs.length == 0) ? "whatever" : noNameArgs[0];
 
@@ -94,27 +67,87 @@ const stringIt = (ns: NumOrStr) => {
 
 function coerceZettelType(s: string | null | undefined): ZettelType {
   if (s == null || s == "") {
-    return "default"
+    return "default";
   }
 
   switch (s[0].toLowerCase()) {
     case "l":
-      return "lab"
+      return "lab";
     case "j":
-      return "journal"
+      return "journal";
     default:
-      return "default"
+      return "default";
   }
 }
 
 function applyTemplate(date: Date, zt: ZettelType): string {
   switch (zt) {
     case "default":
-      return defaultZettel(date)
+      return defaultZettel(date);
     case "journal":
-      return journalZettel(date)
+      return journalZettel(date);
     case "lab":
-      return labZettel(date)
+      return labZettel(date);
+  }
+}
+
+async function createDailyFiles(date: Date, zt: ZettelType) {
+  switch (zt) {
+    case "lab": {
+      const lPath = `labs-${fmtDate(date)}.md`;
+      if (!await (exists(lPath))) {
+        // write the file yyyy-MM-dd.md
+        await Deno.writeTextFile(
+          lPath,
+          `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[lab-notes]] #[[${
+            fmtDate(date)
+          }]]\n`,
+        );
+      }
+      break;
+    }
+    case "journal": {
+      const jPath = `journal-${fmtDate(date)}.md`;
+      if (!await (exists(jPath))) {
+        // write the file yyyy-MM-dd.md
+        await Deno.writeTextFile(
+          jPath,
+          `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[journal]] #[[${
+            fmtDate(date)
+          }]]\n`,
+        );
+      }
+      break;
+    }
+  }
+
+  const datePath = `${fmtDate(date)}.md`;
+  if (!await (exists(datePath))) {
+    // write the file yyyy-MM-dd.md
+    await Deno.writeTextFile(
+      datePath,
+      `---\ndate: ${fmtTime(date)}\n---\n\n\n[[${fmtYearMonth(date)}]]\n`,
+    );
+  }
+
+  const yrMoMdPath = `${fmtYearMonth(date)}.md`;
+
+  if (!await (exists(yrMoMdPath))) {
+    // write the file yyyy-MM.md
+    await Deno.writeTextFile(
+      yrMoMdPath,
+      `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[${fmtYear(date)}]]\n`,
+    );
+  }
+
+  const yrMdPath = `${fmtYear(date)}.md`;
+  const calendarCard = "calendar";
+  if (!await (exists(yrMdPath))) {
+    // write the file yyyy.md
+    await Deno.writeTextFile(
+      yrMdPath,
+      `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[${calendarCard}]]\n`,
+    );
   }
 }
 
