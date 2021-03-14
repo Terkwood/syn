@@ -7,6 +7,23 @@ import { exists } from "https://deno.land/std/fs/mod.ts";
 
 type ZettelType = "default" | "lab" | "journal";
 
+function local(d: Date): Date {
+  const MILLIS = 60000;
+  const diff = d.getTimezoneOffset();
+  const ms = diff * MILLIS * -1;
+  const utcMs = d.getTime();
+  return new Date(utcMs - ms);
+}
+
+function parseDate(x: string): Date {
+  const r = Date.parse(x);
+  if (Number.isNaN(r)) {
+    return new Date();
+  } else {
+    return new Date(r);
+  }
+}
+
 async function invokeEditorOn(path: string) {
   const p = await Deno.run({
     cmd: ["code", path],
@@ -19,10 +36,11 @@ async function invokeEditorOn(path: string) {
 
 interface Options {
   zettelType: ZettelType;
+  date: Date;
 }
 
 async function syn(phrase: string, options: Options) {
-  const { zettelType } = options;
+  const { zettelType, date } = options;
 
   const path = `${phrase}.md`;
   if (await (exists(path))) {
@@ -34,8 +52,6 @@ async function syn(phrase: string, options: Options) {
       Deno.exit(1);
     }
   } else {
-    const date = new Date();
-
     const data = applyTemplate(date, zettelType);
 
     // write the main note file
@@ -62,7 +78,7 @@ const labZettel = (date: Date) =>
 
 const args = parse(Deno.args);
 const typeArg = args["t"] || args["type"];
-
+const dateArg = args["d"] || args["date"];
 const noNameArgs = args["_"];
 
 function randomName(): string {
@@ -166,4 +182,7 @@ async function createDailyFiles(date: Date, zt: ZettelType) {
   }
 }
 
-await syn(theFile, { zettelType: coerceZettelType(typeArg) });
+await syn(theFile, {
+  zettelType: coerceZettelType(typeArg),
+  date: local(parseDate(dateArg)),
+});
