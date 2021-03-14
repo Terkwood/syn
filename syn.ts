@@ -59,11 +59,12 @@ const typeArg = args["t"] || args["type"];
 const noNameArgs = args["_"];
 const fileNameStrOrNum = (noNameArgs.length == 0) ? "whatever" : noNameArgs[0];
 
-type NumOrStr = number | string;
-const stringIt = (ns: NumOrStr) => {
+const stringIt = (ns: number | string) => {
   if (typeof ns === "string") return ns;
   else return `${ns}`;
 };
+
+const theFile = stringIt(fileNameStrOrNum);
 
 function coerceZettelType(s: string | null | undefined): ZettelType {
   if (s == null || s == "") {
@@ -151,4 +152,4 @@ async function createDailyFiles(date: Date, zt: ZettelType) {
   }
 }
 
-await syn(stringIt(fileNameStrOrNum), coerceZettelType(typeArg));
+await syn(theFile, coerceZettelType(typeArg));
