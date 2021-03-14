@@ -2,6 +2,7 @@
 
 import { format } from "https://deno.land/std@0.90.0/datetime/mod.ts";
 import { parse } from "https://deno.land/std@0.90.0/flags/mod.ts";
+import { v4 } from "https://deno.land/std@0.90.0/uuid/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
 
 type ZettelType = "default" | "lab" | "journal";
@@ -17,7 +18,7 @@ async function invokeEditorOn(path: string) {
 }
 
 interface Options {
-  zettelType: ZettelType
+  zettelType: ZettelType;
 }
 
 async function syn(phrase: string, options: Options) {
@@ -63,7 +64,14 @@ const args = parse(Deno.args);
 const typeArg = args["t"] || args["type"];
 
 const noNameArgs = args["_"];
-const fileNameStrOrNum = (noNameArgs.length == 0) ? "whatever" : noNameArgs[0];
+
+function randomName(): string {
+  return v4.generate().substr(0, 8);
+}
+
+const fileNameStrOrNum = (noNameArgs.length == 0)
+  ? randomName()
+  : noNameArgs[0];
 
 const stringIt = (ns: number | string) => {
   if (typeof ns === "string") return ns;
