@@ -9,9 +9,9 @@ type ZettelType = "default" | "lab" | "journal";
 
 function local(d: Date): Date {
   const MILLIS = 60000;
-  const diff = new Date().getTimezoneOffset()
+  const diff = d.getTimezoneOffset()
   const ms = diff * MILLIS * -1;
-  const utcMs = new Date().getTime()
+  const utcMs = d.getTime()
   return new Date(utcMs - ms)
 }
 
