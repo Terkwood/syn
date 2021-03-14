@@ -2,8 +2,9 @@
 
 import { format } from "https://deno.land/std@0.90.0/datetime/mod.ts";
 import { parse } from "https://deno.land/std@0.90.0/flags/mod.ts";
-
 import { exists } from "https://deno.land/std/fs/mod.ts";
+
+type ZettelType = "default" | "lab" | "journal";
 
 async function invokeEditorOn(path: string) {
   const p = await Deno.run({
@@ -15,7 +16,7 @@ async function invokeEditorOn(path: string) {
   p.status();
 }
 
-async function syn(phrase: string) {
+async function syn(phrase: string, _zettelType: ZettelType) {
   const path = `${phrase}.md`;
   if (await (exists(path))) {
     const statdd = await Deno.lstat(path);
@@ -75,6 +76,9 @@ const defaultZettel = (date: Date) =>
   `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[${fmtDate(date)}]]\n`;
 
 const args = parse(Deno.args);
+const typeArg = args["t"] || args["type"];
+
+  
 const noNameArgs = args["_"];
 const fileNameStrOrNum = (noNameArgs.length == 0) ? "whatever" : noNameArgs[0];
 
@@ -84,4 +88,15 @@ const stringIt = (ns: NumOrStr) => {
   else return `${ns}`;
 };
 
-await syn(stringIt(fileNameStrOrNum));
+function coerceZettelType(s: string | null | undefined): ZettelType {
+  switch (s) {
+    case "lab":
+      return "lab"
+    case "journal":
+      return "journal"
+    default:
+      return "default"
+  }
+}
+
+await syn(stringIt(fileNameStrOrNum), coerceZettelType(typeArg));
