@@ -7,6 +7,15 @@ import { exists } from "https://deno.land/std/fs/mod.ts";
 
 type ZettelType = "default" | "lab" | "journal";
 
+function parseDate(x: string): Date | null {
+  const r = Date.parse(x)
+  if (Number.isNaN(r)) {
+    return null
+  } else {
+    return new Date(r)
+  }
+}
+
 async function invokeEditorOn(path: string) {
   const p = await Deno.run({
     cmd: ["code", path],
