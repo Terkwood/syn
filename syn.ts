@@ -16,7 +16,13 @@ async function invokeEditorOn(path: string) {
   p.status();
 }
 
-async function syn(phrase: string, zettelType: ZettelType) {
+interface Options {
+  zettelType: ZettelType
+}
+
+async function syn(phrase: string, options: Options) {
+  const { zettelType } = options;
+
   const path = `${phrase}.md`;
   if (await (exists(path))) {
     const statdd = await Deno.lstat(path);
@@ -152,4 +158,4 @@ async function createDailyFiles(date: Date, zt: ZettelType) {
   }
 }
 
-await syn(theFile, coerceZettelType(typeArg));
+await syn(theFile, { zettelType: coerceZettelType(typeArg) });
