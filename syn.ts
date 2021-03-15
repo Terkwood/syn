@@ -205,6 +205,14 @@ async function createDailyFiles(date: Date, zt: ZettelType) {
   }
 }
 
+function trimMdExtension(file: string | null | undefined): string | null {
+  if (file == null) {
+    return null;
+  } else {
+    throw('todo')
+  }
+}
+
 await syn(theFile, {
   zettelType: coerceZettelType(typeArg),
   date: local(parseDate(dateArg)),
