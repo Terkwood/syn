@@ -210,8 +210,8 @@ function isMdExtension(file: string): boolean {
     file.substring(file.length - 3, file.length).trim().toLowerCase() == ".md";
 }
 
-function trimMdExtension(file: string ): string   {
-   if (isMdExtension(file)) {
+function trimMdExtension(file: string): string {
+  if (isMdExtension(file)) {
     return file.substring(0, file.length - 3);
   } else {
     return file;
