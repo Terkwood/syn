@@ -205,7 +205,20 @@ async function createDailyFiles(date: Date, zt: ZettelType) {
   }
 }
 
-await syn(theFile, {
+function isMdExtension(file: string): boolean {
+  return file.length > 2 &&
+    file.substring(file.length - 3, file.length).trim().toLowerCase() == ".md";
+}
+
+function trimMdExtension(file: string): string {
+  if (isMdExtension(file)) {
+    return file.substring(0, file.length - 3);
+  } else {
+    return file;
+  }
+}
+
+await syn(trimMdExtension(theFile), {
   zettelType: coerceZettelType(typeArg),
   date: local(parseDate(dateArg)),
 });
