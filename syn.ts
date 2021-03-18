@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-run --allow-read --allow-write --unstable
+#!/usr/bin/env -S deno run --allow-env --allow-run --allow-read --allow-write --unstable
 
 import { format } from "https://deno.land/std@0.90.0/datetime/mod.ts";
 import { parse } from "https://deno.land/std@0.90.0/flags/mod.ts";
@@ -58,12 +58,19 @@ async function invokeEditorOn(path: string) {
 }
 
 interface Options {
+  zettelHome: string | undefined;
   zettelType: ZettelType;
   date: Date;
 }
 
 async function syn(phrase: string, options: Options) {
-  const { zettelType, date } = options;
+  const { zettelHome, zettelType, date } = options;
+
+  const returnToInitialDir = () => Deno.chdir(Deno.cwd());
+
+  if (zettelHome) {
+    Deno.chdir(zettelHome);
+  }
 
   const path = `${phrase}.md`;
   if (await (exists(path))) {
@@ -84,6 +91,10 @@ async function syn(phrase: string, options: Options) {
     await createDailyFiles(date, zettelType);
 
     await invokeEditorOn(path);
+  }
+
+  if (zettelHome) {
+    returnToInitialDir();
   }
 }
 
@@ -218,7 +229,10 @@ function trimMdExtension(file: string): string {
   }
 }
 
+const zettelHome: string | undefined = Deno.env.get("ZETTELKASTEN");
+
 await syn(trimMdExtension(theFile), {
+  zettelHome,
   zettelType: coerceZettelType(typeArg),
   date: local(parseDate(dateArg)),
 });
