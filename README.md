@@ -40,3 +40,35 @@ syn.ts --date tomorrow i-hope-its-nice
 syn.ts -d 2012-02-21 the-world-did-not-end
 syn.ts --date 2030
 ```
+
+## Zettel type outputs
+
+### "default"`
+
+```text
+---
+date: 2021-03-18T15:09
+---
+
+[[2021-03-18]]
+```
+
+### "labs"
+
+```text
+---
+date: 2021-03-18T15:09
+---
+
+#[[labs-2021-03-18]]
+```
+
+### "journal"
+
+```text
+---
+date: 2021-03-16T00:00
+---
+
+#[[journal-2021-03-16]]
+```
