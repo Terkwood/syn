@@ -28,3 +28,15 @@ zettelkasten dir.
 ```sh
 export ZETTELKASTEN=~/zettels
 ```
+
+## Backdating and such
+
+You can choose to use a different date for the generated
+zettelkasten.
+
+```sh
+syn.ts -d yesterday something-happened
+syn.ts --date tomorrow i-hope-its-nice
+syn.ts -d 2012-02-21 the-world-did-not-end
+syn.ts --date 2030
+```
