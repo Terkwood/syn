@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/Terkwood/syn/compare/v0.2.0...v0.2.1) (2021-03-18)
+
+
+### Features
+
+* trim md extension ([#8](https://github.com/Terkwood/syn/issues/8)) ([b16afc9](https://github.com/Terkwood/syn/commit/b16afc98fdaa516b8a5cf9ed2647522a50c2b9fc))
+* ZETTELKASTEN env ([8fa2ee5](https://github.com/Terkwood/syn/commit/8fa2ee57658390f767141aed5d2480f0cc971dfc))
+
 ## [0.2.0](https://github.com/Terkwood/syn/compare/v0.1.3...v0.2.0) (2021-03-14)
 
 
