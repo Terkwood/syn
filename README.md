@@ -11,12 +11,14 @@ syn hello-something-new
 syn this-already-existed
 ```
 
-But you can also pass a couple of types, which will change the formatting of the generated zettel:
+You can ask for a few different "types", which will change the formatting of the generated zettel:
 
 ```sh
 syn -t lab broken-beaker-wash-me-off
 syn --type journal today-my-headache-is-very-caffeinated
 ```
+
+See [Zettel output types](https://github.com/Terkwood/syn#zettel-type-outputs), below.
 
 ## Setting homedir
 
