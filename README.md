@@ -17,3 +17,14 @@ But you can also pass a couple of types, which will change the formatting of the
 syn -t lab broken-beaker-wash-me-off
 syn --type journal today-my-headache-is-very-caffeinated
 ```
+
+## Setting homedir
+
+You can set the home directory of your zettelkasten,
+so that you can invoke the script safely from any other
+directory.  The resulting zettel will be created in your
+zettelkasten dir.
+
+```sh
+export ZETTELKASTEN=~/zettels
+```
