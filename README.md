@@ -43,7 +43,7 @@ syn.ts --date 2030
 
 ## Zettel type outputs
 
-### "default"`
+### "default"
 
 ```text
 ---
