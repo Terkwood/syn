@@ -108,9 +108,9 @@ const defaultZettel = (date: Date) =>
   `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[${fmtDate(date)}]]\n`;
 const blankZettel = (date: Date) => `---\ndate: ${fmtTime(date)}\n---\n`;
 const journalZettel = (date: Date) =>
-  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[journal]] #[[journal-${fmtDate(date)}]]\n`;
+  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[journal]] [[journal-${fmtDate(date)}]]\n`;
 const labZettel = (date: Date) =>
-  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[lab-notes]] #[[labs-${fmtDate(date)}]]\n`;
+  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[lab-notes]] [[labs-${fmtDate(date)}]]\n`;
 
 const args = parse(Deno.args);
 const typeArg = args["t"] || args["type"];
