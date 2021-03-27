@@ -14,9 +14,9 @@ syn this-already-existed
 You can ask for a few different "types", which will change the formatting of the generated zettel:
 
 ```sh
-syn -t lab broken-beaker-wash-me-off
-syn --type journal today-my-headache-is-very-caffeinated
-syn --type tag linux
+syn.ts -t lab broken-beaker-wash-me-off
+syn.ts --type journal today-my-headache-is-very-caffeinated
+syn.ts --type tag linux
 ```
 
 See [Zettel output types](https://github.com/Terkwood/syn#zettel-type-outputs), below.
