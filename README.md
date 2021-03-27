@@ -75,3 +75,15 @@ date: 2021-03-16T00:00
 
 #[[journal-2021-03-16]]
 ```
+
+### "tag"
+
+`syn.ts --type tag music` will result in:
+
+```text
+---
+date: 2021-03-10T10:58
+---
+
+[[z:zettels?tag=music&timeline]]
+```
