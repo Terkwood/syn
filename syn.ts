@@ -116,7 +116,7 @@ const labZettel = (date: Date) =>
     fmtDate(date)
   }]]\n`;
 const tagZettel = (date: Date, tag: string) =>
-  `---\ndate: ${fmtTime(date)}\n---\n\n\n[[z:zettels?tag=${tag}&timeline]]\n`;
+  `---\ndate: ${fmtTime(date)}\n---\n\n\n[[z:zettels?tag=${tag.replaceAll("-","")}&timeline]]\n`;
 
 const args = parse(Deno.args);
 const typeArg = args["t"] || args["type"];
