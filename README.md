@@ -21,6 +21,12 @@ syn --type tag linux
 
 See [Zettel output types](https://github.com/Terkwood/syn#zettel-type-outputs), below.
 
+## Highly recommended: a bash alias
+
+```sh
+alias syn=/path/to/syn.ts
+```
+
 ## Setting homedir
 
 You can set the home directory of your zettelkasten,
