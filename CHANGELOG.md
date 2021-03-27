@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://github.com/Terkwood/syn/compare/v0.2.2...v0.2.3) (2021-03-27)
+
+
+### Features
+
+* flat links to journal and labs ([16cc82c](https://github.com/Terkwood/syn/commit/16cc82c97916a411c43f737024a8ad5e9571f7aa))
+* tag zettel ([#11](https://github.com/Terkwood/syn/issues/11)) ([39c24f2](https://github.com/Terkwood/syn/commit/39c24f255af0d7e3a2ffa75c373f0fe6409a01b4))
+
 ### [0.2.2](https://github.com/Terkwood/syn/compare/v0.2.1...v0.2.2) (2021-03-24)
 
 
