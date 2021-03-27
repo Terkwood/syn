@@ -5,7 +5,7 @@ import { parse } from "https://deno.land/std@0.90.0/flags/mod.ts";
 import { v4 } from "https://deno.land/std@0.90.0/uuid/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
 
-type ZettelType = "default" | "lab" | "journal" | "blank";
+type ZettelType = "default" | "lab" | "journal" | "blank" | "tag";
 
 const MINUTE_MILLIS = 60000;
 const DAY_MINUTES = 60 * 24;
@@ -82,7 +82,7 @@ async function syn(phrase: string, options: Options) {
       Deno.exit(1);
     }
   } else {
-    const data = applyTemplate(date, zettelType);
+    const data = applyTemplate(date, zettelType, phrase);
 
     // write the main note file
     await Deno.writeTextFile(path, data);
@@ -108,9 +108,15 @@ const defaultZettel = (date: Date) =>
   `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[${fmtDate(date)}]]\n`;
 const blankZettel = (date: Date) => `---\ndate: ${fmtTime(date)}\n---\n`;
 const journalZettel = (date: Date) =>
-  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[journal]] [[journal-${fmtDate(date)}]]\n`;
+  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[journal]] [[journal-${
+    fmtDate(date)
+  }]]\n`;
 const labZettel = (date: Date) =>
-  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[lab-notes]] [[labs-${fmtDate(date)}]]\n`;
+  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[lab-notes]] [[labs-${
+    fmtDate(date)
+  }]]\n`;
+const tagZettel = (date: Date, tag: string) =>
+  `---\ndate: ${fmtTime(date)}\n---\n\n\n[[z:zettels?tag=${tag}&timeline]]\n`;
 
 const args = parse(Deno.args);
 const typeArg = args["t"] || args["type"];
@@ -144,12 +150,14 @@ function coerceZettelType(s: string | null | undefined): ZettelType {
       return "lab";
     case "j":
       return "journal";
+    case "t":
+      return "tag";
     default:
       return "default";
   }
 }
 
-function applyTemplate(date: Date, zt: ZettelType): string {
+function applyTemplate(date: Date, zt: ZettelType, name: string): string {
   switch (zt) {
     case "default":
       return defaultZettel(date);
@@ -159,6 +167,8 @@ function applyTemplate(date: Date, zt: ZettelType): string {
       return journalZettel(date);
     case "lab":
       return labZettel(date);
+    case "tag":
+      return tagZettel(date, name);
   }
 }
 
