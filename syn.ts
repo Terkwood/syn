@@ -5,7 +5,7 @@ import { parse } from "https://deno.land/std@0.90.0/flags/mod.ts";
 import { v4 } from "https://deno.land/std@0.90.0/uuid/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
 
-type ZettelType = "default" | "lab" | "journal" | "blank" | "tag";
+type ZettelType = "default" | "lab" | "journal" | "tag";
 
 const MINUTE_MILLIS = 60000;
 const DAY_MINUTES = 60 * 24;
@@ -87,7 +87,7 @@ async function syn(phrase: string, options: Options) {
     // write the main note file
     await Deno.writeTextFile(path, data);
 
-    if (zettelType != "blank") {
+    if (zettelType != "default") {
       // labs-YYYY-MM-dd or journal-YYYY-MM-dd, if necessary
       await createDailyFiles(date, zettelType);
     }
@@ -104,9 +104,7 @@ const fmtDate = (date: Date) => format(date, "yyyy-MM-dd");
 const fmtYearMonth = (date: Date) => format(date, "yyyy-MM");
 const fmtYear = (date: Date) => format(date, "yyyy");
 
-const defaultZettel = (date: Date) =>
-  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[${fmtDate(date)}]]\n`;
-const blankZettel = (date: Date) => `---\ndate: ${fmtTime(date)}\n---\n`;
+const defaultZettel = (date: Date) => `---\ndate: ${fmtTime(date)}\n---\n`;
 const journalZettel = (date: Date) =>
   `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[journal]] [[journal-${
     fmtDate(date)
@@ -144,8 +142,6 @@ function coerceZettelType(s: string | null | undefined): ZettelType {
   }
 
   switch (s[0].toLowerCase()) {
-    case "b":
-      return "blank";
     case "l":
       return "lab";
     case "j":
@@ -161,8 +157,6 @@ function applyTemplate(date: Date, zt: ZettelType, name: string): string {
   switch (zt) {
     case "default":
       return defaultZettel(date);
-    case "blank":
-      return blankZettel(date);
     case "journal":
       return journalZettel(date);
     case "lab":
