@@ -2,7 +2,7 @@
 
 My custom script for creating new zettels in [neuron](https://neuron.zettel.page/)
 
-By default, it will create links to zettels representing the full date, month, and year of today's date.
+It is mainly a shortcut for creating "lab", "journal", and "tag list" entries. If you don't ask for one of these special types of zettels, the script's behavior is roughly the same as `neuron gen`.
 
 ```sh
 alias syn="/path/to/repo/syn.ts"
@@ -25,7 +25,7 @@ See [Zettel output types](https://github.com/Terkwood/syn#zettel-type-outputs), 
 
 You can set the home directory of your zettelkasten,
 so that you can invoke the script safely from any other
-directory.  The resulting zettel will be created in your
+directory. The resulting zettel will be created in your
 zettelkasten dir.
 
 ```sh
@@ -38,9 +38,9 @@ You can choose to use a different date for the generated
 zettelkasten.
 
 ```sh
-syn.ts -d yesterday something-happened
-syn.ts --date tomorrow i-hope-its-nice
-syn.ts -d 2012-02-21 the-world-did-not-end
+syn.ts -d yesterday -t l something-happened
+syn.ts --date tomorrow -t j i-hope-its-nice
+syn.ts -d 2012-02-21 --type journal the-world-did-not-end
 syn.ts --date 2030
 ```
 
@@ -48,35 +48,41 @@ syn.ts --date 2030
 
 ### "default"
 
+This is the same as `neuron gen`, though you can mess with the date by using `-d` or `--date`.
+
 ```text
 ---
 date: 2021-03-18T15:09
 ---
-
-[[2021-03-18]]
 ```
 
 ### "labs"
 
+This type generates a backlink to a dated lab notes entry (and creates it if necessary). It generates an uplink to a top-level `lab-notes` zettel.
+
 ```text
 ---
 date: 2021-03-18T15:09
 ---
 
-#[[labs-2021-03-18]]
+#[[lab-notes]] [[labs-2021-03-18]]
 ```
 
 ### "journal"
 
+This type generates a backlink to a dated journal entry (and creates it if necessary). It generates an uplink to a top-level `journal` zettel.
+
 ```text
 ---
-date: 2021-03-16T00:00
+date: 2021-04-26T00:00
 ---
 
-#[[journal-2021-03-16]]
+#[[journal]] [[journal-2021-04-26]]
 ```
 
 ### "tag"
+
+Generates a tag-listing zettel.
 
 `syn.ts --type tag music` will result in:
 
