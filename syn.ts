@@ -106,9 +106,9 @@ const fmtYear = (date: Date) => format(date, "yyyy");
 
 const defaultZettel = (date: Date) => `---\ndate: ${fmtTime(date)}\n---\n`;
 const journalZettel = (date: Date) =>
-  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[journal]] [[journal-${
+  `---\ndate: ${fmtTime(date)}\n---\n\n\n[[journal-${
     fmtDate(date)
-  }]]\n`;
+  }]] #[[journal]]\n`;
 const labZettel = (date: Date) =>
   `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[lab-notes]] [[labs-${
     fmtDate(date)
