@@ -1,6 +1,6 @@
 # syn-ts 🧠
 
-My custom script for creating new zettels in [neuron](https://neuron.zettel.page/)
+My custom script for creating new zettels in [emanote](https://note.ema.srid.ca/)
 
 It is mainly a shortcut for creating "lab", "journal", and "tag list" entries. If you don't ask for one of these special types of zettels, the script's behavior is roughly the same as `neuron gen`.
 
