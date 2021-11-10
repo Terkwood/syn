@@ -61,10 +61,11 @@ interface Options {
   zettelHome: string | undefined;
   zettelType: ZettelType;
   date: Date;
+  extras: string | undefined;
 }
 
 async function syn(phrase: string, options: Options) {
-  const { zettelHome, zettelType, date } = options;
+  const { zettelHome, zettelType, date, extras } = options;
 
   const returnToInitialDir = () => Deno.chdir(Deno.cwd());
 
@@ -82,7 +83,7 @@ async function syn(phrase: string, options: Options) {
       Deno.exit(1);
     }
   } else {
-    const data = applyTemplate(date, zettelType, phrase);
+    const data = applyTemplate(date, zettelType, phrase, extras);
 
     // write the main note file
     await Deno.writeTextFile(path, data);
@@ -91,6 +92,7 @@ async function syn(phrase: string, options: Options) {
       // labs-YYYY-MM-dd or journal-YYYY-MM-dd, if necessary
       await createDailyFiles(date, zettelType);
     }
+
     await invokeEditorOn(path);
   }
 
@@ -104,21 +106,24 @@ const fmtDate = (date: Date) => format(date, "yyyy-MM-dd");
 const fmtYearMonth = (date: Date) => format(date, "yyyy-MM");
 const fmtYear = (date: Date) => format(date, "yyyy");
 
-const defaultZettel = (date: Date) => `---\ndate: ${fmtTime(date)}\n---\n`;
-const journalZettel = (date: Date) =>
-  `---\ndate: ${fmtTime(date)}\n---\n\n\n[[journal-${
+const defaultZettel = (date: Date, extras: string | undefined) => `---\ndate: ${fmtTime(date)}\n---\n${extras ? extras + '\n' : ''}`;
+const journalZettel = (date: Date, extras: string | undefined) =>
+  `---\ndate: ${fmtTime(date)}\n---\n\n\n#journal [[journal-${
     fmtDate(date)
-  }]] #[[journal]]\n`;
-const labZettel = (date: Date) =>
-  `---\ndate: ${fmtTime(date)}\n---\n\n\n#[[lab-notes]] [[labs-${
+  }]] #[[journal]]\n${extras ? extras + '\n' : ''}`;
+const labZettel = (date: Date, extras: string | undefined) =>
+  `---\ndate: ${fmtTime(date)}\n---\n\n\n#labs #[[lab-notes]] [[labs-${
     fmtDate(date)
-  }]]\n`;
-const tagZettel = (date: Date, tag: string) =>
-  `---\ndate: ${fmtTime(date)}\n---\n\n\n[[z:zettels?tag=${tag.replaceAll("-","")}&timeline]]\n`;
+  }]]\n${extras ? extras + '\n' : ''}`;
+const tagZettel = (date: Date, tag: string, extras: string | undefined) =>
+  `---\ndate: ${fmtTime(date)}\n---\n\n\n[[z:zettels?tag=${tag.replaceAll("-","")}&timeline]]\n${extras ? extras + '\n' : ''}`;
 
 const args = parse(Deno.args);
 const typeArg = args["t"] || args["type"];
 const dateArg = args["d"] || args["date"];
+// extra tags and links
+const extrasArg = args["e"] || args["extras"];
+
 const noNameArgs = args["_"];
 
 function randomName(): string {
@@ -153,16 +158,16 @@ function coerceZettelType(s: string | null | undefined): ZettelType {
   }
 }
 
-function applyTemplate(date: Date, zt: ZettelType, name: string): string {
+function applyTemplate(date: Date, zt: ZettelType, name: string, extras: string | undefined): string {
   switch (zt) {
     case "default":
-      return defaultZettel(date);
+      return defaultZettel(date, extras);
     case "journal":
-      return journalZettel(date);
+      return journalZettel(date, extras);
     case "lab":
-      return labZettel(date);
+      return labZettel(date, extras);
     case "tag":
-      return tagZettel(date, name);
+      return tagZettel(date, name, extras);
   }
 }
 
@@ -245,4 +250,5 @@ await syn(trimMdExtension(theFile), {
   zettelHome,
   zettelType: coerceZettelType(typeArg),
   date: local(parseDate(dateArg)),
+  extras: extrasArg
 });
